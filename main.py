@@ -104,18 +104,39 @@ def main(img_name, glb_thresh, blob_min, filt_max, filt_min):
     
     plt.show()
     
-    # Blob Detection and Measurement
+    # Blob Detection, Measurement, Filtering
     #==========================================================================================
-    analyzed_image = detectAndMeasure(image, morphed_img, blob_min, filt_max, filt_min)
+    marked_img1, marked_img2, stats = detectAndMeasure(image, morphed_img, blob_min, filt_max, filt_min)
     
     # Display the final output with detected and Filtered Blobs
-    analyzed_image_rgb = cv2.cvtColor(analyzed_image, cv2.COLOR_BGR2RGB)
-    plt.figure(num=5)
-    plt.imshow(analyzed_image_rgb)
-    plt.title("Detected and Filtered "+prod)
-    plt.axis("off")
+    fig, axes = plt.subplots(1, 2, figsize=(10, 5),  num=5)
+    
+    
+    marked_img1_rgb = cv2.cvtColor(marked_img1, cv2.COLOR_BGR2RGB)
+    marked_img2_rgb = cv2.cvtColor(marked_img2, cv2.COLOR_BGR2RGB)
+    
+    axes[0].imshow(marked_img1_rgb)
+    axes[0].set_title("Valid Blobs Detected")
+    axes[0].axis("off")
+    
+    axes[1].imshow(marked_img2_rgb)
+    axes[1].set_title("Filtered: Over/Under Sized Blobs")
+    axes[1].axis("off")
+    
     plt.show()
+    
+    # Measurement Analysis
+    #==========================================================================================
 
+    # Print the Measurement Analysis Statistics
+    print("Measurement Analysis Statistics of the blobs")
+    print("============================================")
+    print(f"Total Valid Objects in the Image: {stats['tot_valid_blobs']}")
+    print(f"Total Over Sized Objects in the Image: {stats['tot_over_Sized']}")
+    print(f"Total Under Sized Objects in the Image: {stats['tot_under_Sized']}")
+    print(f"Percentage of LOW Sized products in the batch: {stats['percent_under']}%")
+    print(f"Percentage of OVER Sized products in the batch: {stats['percent_over']}%")
+    
 if __name__ == "__main__":
      # Create an argument parser
     parser = argparse.ArgumentParser(description="G_42 Dimensional Analysis Using Blob Detection")
