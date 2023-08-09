@@ -71,7 +71,11 @@ def detectAndMeasure(org_img, proc_img, blobMin, filtMax, filtMin):
             
     
     # Calculate the Percentage of Over and Under Sized batching
-    filt_stats["percent_under"] = round((filt_stats["tot_under_Sized"]/filt_stats["tot_valid_blobs"])*100, 2)
-    filt_stats["percent_over"] = round((filt_stats["tot_over_Sized"]/filt_stats["tot_valid_blobs"])*100, 2)
+    if filt_stats["tot_valid_blobs"] > 0 :
+        filt_stats["percent_under"] = round((filt_stats["tot_under_Sized"]/filt_stats["tot_valid_blobs"])*100, 2)
+        filt_stats["percent_over"] = round((filt_stats["tot_over_Sized"]/filt_stats["tot_valid_blobs"])*100, 2)
+    else:
+        filt_stats["percent_under"] = 0
+        filt_stats["percent_over"] = 0
     
     return org_img_copy, org_img, filt_stats
